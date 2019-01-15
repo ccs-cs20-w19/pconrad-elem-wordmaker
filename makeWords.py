@@ -2,7 +2,13 @@ import pytest
 
 def makeWords(elemList,numElems,wordList):
     "numElems is how many elements to use at a time"
-    return ["stub"]
+
+    result = set() # empty set
+    candidates = makeCandidateWords(elemList, numElems)
+    for w in candidates:
+        if w.upper() in wordList:
+            result.add(w)    
+    return result
 
 def makeCandidateWords(elemList,numElems):
     if numElems == 1:
@@ -31,28 +37,39 @@ def test_makeCandidateWords_3():
              "PPLi","PPP"]
    assert makeCandidateWords(elemlist, 3)==expected   
 
+def allUpper(setOfStrings):
+    result = set()
+    for s in setOfStrings:
+        result.add(s.upper())
+    return result
+
+def test_allUpper_1():
+    assert(allUpper({"LiP","TiN"})=={"TIN","LIP"})
+
 def test_makeWords_2a():
    elemlist=["O","N","H","C"]
    wordlist=["NO","ON","TO","AN"]
-   expected=["NO","ON"]
-   assert makeWords(elemlist, 2, wordlist)==expected
+   expected={"NO","ON"}
+   result= makeWords(elemlist, 2, wordlist)
+   assert (allUpper(result)==expected)
    
 def test_makeWords_3a():
    elemlist=["O","N","H","C"]
    wordlist=["CON","HON","OOH","ASH","LIP"]
-   expected=["CON","HON","OOH"]
-   assert makeWords(elemlist, 3, wordlist)==expected
+   expected={"CON","HON","OOH"}
+   result= makeWords(elemlist, 3, wordlist)
+   assert allUpper(result)==expected
    
 
 def test_makeWords_2b():
    elemlist=["Li","P","O","N","Ti","I"]
    wordlist=["LIP","ASH","CON","TIN","NIP","TIP","POP","PI","IN","ON"]
-   expected=["LIP","TIN","TIP","PI","IN","ON"]
-   assert makeWords(elemlist, 2, wordlist)==expected
+   expected={"LIP","TIN","TIP","PI","IN","ON"}
+   assert allUpper(makeWords(elemlist, 2, wordlist))==expected
    
 def test_makeWords_3b():
    elemlist=["Li","P","Ti","N","O"]
-   wordlist=["LIP","ASH","CON","TIN","NIP","TIP","LION",]
-   expected=["POP","LION"]
-   assert makeWords(elemlist, 3, wordlist)==expected
+   wordlist=["LIP","ASH","CON","TIN","NIP","TIP","LION","POP"]
+   expected={"POP","LION"}
+   assert allUpper(makeWords(elemlist, 3, wordlist))==expected
    
