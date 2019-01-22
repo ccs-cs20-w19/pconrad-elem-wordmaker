@@ -1,4 +1,16 @@
 import pytest
+import twl
+import tryPeriodic
+
+def makeWordsFromScrabbleDict(numElems):
+    "numElems is how many elements to use at a time"
+    elemList = tryPeriodic.getSymbolList()
+    result = set() # empty set
+    candidates = makeCandidateWords(elemList, numElems)
+    for w in candidates:       
+        if twl.check(w.lower()) :
+            result.add(w)    
+    return result
 
 def makeWords(elemList,numElems,wordList):
     "numElems is how many elements to use at a time"
