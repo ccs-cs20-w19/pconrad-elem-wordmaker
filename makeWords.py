@@ -2,6 +2,13 @@ import pytest
 import twl
 import tryPeriodic
 
+def wordToElemPrefixes(word,elemlist):
+    result = set()
+    for e in elemlist:
+        if word.startswith(e.lower()):
+            result.add(e)
+    return result
+
 def makeWordsFromScrabbleDict(numElems):
     "numElems is how many elements to use at a time"
     elemList = tryPeriodic.getSymbolList()
@@ -85,3 +92,18 @@ def test_makeWords_3b():
    expected={"POP","LION"}
    assert allUpper(makeWords(elemlist, 3, wordlist))==expected
    
+
+def test_checkWords_cat():
+   elemlist=["C","Ca","H","Li"]
+   assert wordToElemPrefixes("cat",elemlist)=={"C","Ca"}
+ 
+def test_checkWords_an():
+   elemlist=["O","N","H","C","Li","Ca"]
+   assert wordToElemPrefixes("an",elemlist)==set()
+ 
+def test_checkWords_lip():
+   elemlist=["Li","P","Ti","N","O"]
+   assert wordToElemPrefixes("lip",elemlist)=={"Li"}
+
+
+
