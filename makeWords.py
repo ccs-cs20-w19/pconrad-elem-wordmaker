@@ -2,12 +2,68 @@ import pytest
 import twl
 import tryPeriodic
 
+def printAllWords():
+  for word in twl.iterator():
+    ways = wordToElems(word)
+    if ways != set():
+      print(ways)
 
 
 
+def countWords():
+ allWordCount = 0
+ canMakeCount = 0
+ cantMakeCount = 0
+ for word in twl.iterator():
+    allWordCount += 1 
+    ways = wordToElems(word)
+    if ways != set():
+        canMakeCount += 1
+    else:
+        cantMakeCount +=1
+ print("words",allWordCount,"can",canMakeCount,"can't",cantMakeCount)
 
 
+def findLongestWordsSpellings():
+ longestSoFar = 0
+ for word in twl.iterator():
+    ways = wordToElems(word)
+    if ways != set():
+        lengthOfThisWord = len(word)
+        if lengthOfThisWord > longestSoFar:
+            setOfLongest = [ ways ]
+            longestSoFar = lengthOfThisWord
+        elif lengthOfThisWord == longestSoFar:
+            setOfLongest.append(ways)
+ return setOfLongest
 
+
+def findLongestWords():
+ longestSoFar = 0
+ for word in twl.iterator():
+    ways = wordToElems(word)
+    if ways != set():
+        lengthOfThisWord = len(word)
+        if lengthOfThisWord > longestSoFar:
+            setOfLongest = [ word ]
+            longestSoFar = lengthOfThisWord
+        elif lengthOfThisWord == longestSoFar:
+            setOfLongest.append(word)
+ return setOfLongest
+
+def findMostSpellings():
+ longestSoFar = 0
+ for word in twl.iterator():
+    ways = wordToElems(word)
+    if ways != set():
+        sizeOfThisSet = len(ways)
+        if sizeOfThisSet > longestSoFar:
+            setOfLongest = [ ways ]
+            longestSoFar = sizeOfThisSet
+        elif sizeOfThisSet == longestSoFar:
+            setOfLongest.append(ways)
+ return setOfLongest
+ 
 # From https://stackoverflow.com/questions/16891340/remove-a-prefix-from-a-string
 def stripPrefix(text, prefix):
     if text.startswith(prefix):
