@@ -2,7 +2,38 @@ import pytest
 import twl
 import tryPeriodic
 
-def wordToElemPrefixes(word,elemlist):
+
+
+
+
+
+
+# From https://stackoverflow.com/questions/16891340/remove-a-prefix-from-a-string
+def stripPrefix(text, prefix):
+    if text.startswith(prefix):
+        return text[len(prefix):]
+    return text  
+
+def wordToElems(word, elemlist=tryPeriodic.getSymbolList()):
+    if word == '':
+        return {''}
+    word = word.lower()
+    result = set()
+    prefixes = wordToElemPrefixes(word,elemlist)
+    
+    for p in prefixes:
+        # strip off the prefix, call this "restOfWord"
+        restOfWord = stripPrefix(word,p.lower())
+        # get the set of all the ways of making "restOfWord" with elements
+        suffixes = wordToElems(restOfWord,elemlist)
+        for s in suffixes:
+            result.add( p + s)
+
+        # add this prefix with all of those into my result set
+    return result    
+
+def wordToElemPrefixes(word,elemlist=tryPeriodic.getSymbolList()):
+    word=word.lower()
     result = set()
     for e in elemlist:
         if word.startswith(e.lower()):
@@ -93,17 +124,26 @@ def test_makeWords_3b():
    assert allUpper(makeWords(elemlist, 3, wordlist))==expected
    
 
-def test_checkWords_cat():
+def test_checkWordToElemPrefixes_cat():
    elemlist=["C","Ca","H","Li"]
    assert wordToElemPrefixes("cat",elemlist)=={"C","Ca"}
- 
-def test_checkWords_an():
+
+def test_checkWordToElemPrefixes_an():
    elemlist=["O","N","H","C","Li","Ca"]
    assert wordToElemPrefixes("an",elemlist)==set()
- 
-def test_checkWords_lip():
+
+def test_checkWordToElemPrefixes_lip():
    elemlist=["Li","P","Ti","N","O"]
    assert wordToElemPrefixes("lip",elemlist)=={"Li"}
 
+def test_wordToElems_lip():
+    elemlist=["Li","P","Ti","N","O"]
+    assert wordToElems("lip",elemlist)=={"LiP"}
 
+def test_wordToElems_sin():
+    elemlist=["Li","P","Ti","N","O","In","S","Si","I"]
+    assert wordToElems("sin",elemlist)=={"SIN","SiN","SIn"}
 
+    
+def test_stripPrefix_lion():
+    assert stripPrefix("lion","li")=="on"
